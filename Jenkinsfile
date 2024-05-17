@@ -12,14 +12,13 @@ pipeline {
                 }
             }
 
+            stage('Sonar Scan') {
             steps {
-                // Checkout your code
-                git 'https://github.com/your-username/your-repo.git'
-
-                // Install dependencies and build
-                sh 'npm install'
-                sh 'npm run build'
+                withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
+                    sh 'mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}'
+                }
             }
+        }
         }
         
         // Add more stages as needed
