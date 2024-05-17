@@ -1,33 +1,27 @@
-pipeline{
-  agent any
+pipeline {
+    agent none  // Specify 'none' to prevent running any default agent
 
-     stages{
-        stage('clean work space'){
-            steps{
-                cleanWs()
+    stages {
+        stage('Build in Docker') {
+            agent {
+                docker {
+                    // Use the official Node.js Docker image
+                    image 'node:latest'
+                    // Mount the Docker socket to allow Docker commands within the container
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                }
             }
-        }
 
-        stage('Git Checkout'){
-            steps{
-                git branch: 'main', url: 'https://github.com/kamalakar22/Youtube-clone-app.git'
-            }
-        }
-         stage('Build') {
             steps {
-                // Run the build script
+                // Checkout your code
+                git 'https://github.com/your-username/your-repo.git'
+
+                // Install dependencies and build
+                sh 'npm install'
                 sh 'npm run build'
             }
         }
-
-       stage('Sonar Scan') {
-            steps {
-                withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
-                    sh 'mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}'
-                }
-            }
-        }
-          
-     }   
- 
+        
+        // Add more stages as needed
+    }
 }
