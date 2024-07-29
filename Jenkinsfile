@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Checkout') {
             steps {
-                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/Ashfaque-9x/a-youtube-clone-app.git'
+                git branch: 'main', url: 'https://github.com/kamalakar22/Youtube-clone-app.git'
             }
         }
         stage('Install Dependencies') {
