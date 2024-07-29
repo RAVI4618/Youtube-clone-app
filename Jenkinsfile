@@ -33,12 +33,21 @@ pipeline {
                 archiveArtifacts artifacts: 'trivyfs.txt', allowEmptyArchive: true
             }
         }
-        stage('Docker Build') {
+        stage('Docker Buildx Build') {
             steps {
                 script {
-                    // Build Docker image
-                    echo "Building Docker image: ${IMAGE_NAME}:${IMAGE_TAG}"
-                    def dockerImage = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                    // Install Docker Buildx if not already installed
+                    sh 'docker buildx create --use || true'
+
+                    // Build Docker image with Buildx
+                    echo "Building Docker image with buildx: ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh """
+                        docker buildx build \
+                        --tag ${IMAGE_NAME}:${IMAGE_TAG} \
+                        --tag ${IMAGE_NAME}:latest \
+                        --output type=docker \
+                        .
+                    """
                 }
             }
         }
@@ -63,8 +72,8 @@ pipeline {
 
                     // Push Docker image
                     echo "Pushing Docker image: ${IMAGE_NAME}:${IMAGE_TAG}"
-                    docker.image("${IMAGE_NAME}:${IMAGE_TAG}").push()
-                    docker.image("${IMAGE_NAME}:${IMAGE_TAG}").push('latest')
+                    sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker push ${IMAGE_NAME}:latest"
                 }
             }
         }
