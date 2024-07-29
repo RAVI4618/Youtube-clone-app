@@ -36,8 +36,8 @@ pipeline {
         stage('Docker Buildx Build') {
             steps {
                 script {
-                    // Install Docker Buildx if not already installed
-                    sh 'docker buildx create --use || true'
+                    // Create and use a new buildx builder instance
+                    sh 'docker buildx create --name mybuilder --use || true'
 
                     // Build Docker image with Buildx
                     echo "Building Docker image with buildx: ${IMAGE_NAME}:${IMAGE_TAG}"
@@ -45,6 +45,7 @@ pipeline {
                         docker buildx build \
                         --tag ${IMAGE_NAME}:${IMAGE_TAG} \
                         --tag ${IMAGE_NAME}:latest \
+                        --file Dockerfile \
                         --output type=docker \
                         .
                     """
