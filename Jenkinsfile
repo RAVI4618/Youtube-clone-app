@@ -14,7 +14,7 @@ pipeline {
     stages{
         stage('Clean'){
             steps{
-                CleanWs()
+                 cleanWs()
             }
         }
          stage('Install Dependences'){
