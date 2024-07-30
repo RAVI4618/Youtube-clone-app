@@ -25,7 +25,7 @@ pipeline {
                  stage('Trivy Scan'){
             steps{
                 sh "trivy fs . > trivy.txt"
-                archiveArtifacts artifacts: trivy.txt, allowEmptyArtifacts: true
+                archiveArtifacts artifacts: trivy.txt, allowEmptyArchive: true
             }
         }
         
