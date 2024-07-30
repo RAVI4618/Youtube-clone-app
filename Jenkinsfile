@@ -5,10 +5,11 @@ pipeline {
         nodejs 'nodejs'
     }
     environment{
+       APP_NAME = "youtube-clone"
+        RELEASE = "1.0.0"
         DOCKER_USER = "gundala22reddy"
-        APP_NAME = "youtube-clone"
-        TAG = "${env.BUILD_NUMBER}"
-        IMAGE = "${DOCKER_USER}/${APP_NAME}:${TAG}"
+        IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }  
     stages{
         stage('Clean'){
@@ -30,7 +31,7 @@ pipeline {
     stage('Docker Build') {
             steps {
                 script{
-                    def Image = docker.build("{DOCKER_USER}/${APP_NAME}:${TAG}")
+                    def Image = docker.build("$IMAGE_NAME}:${IMAGE_TAG}")
                 }
             }
         }
