@@ -17,6 +17,17 @@ pipeline {
                 CleanWs()
             }
         }
+         stage('Install Dependences'){
+            steps{
+                sh 'npm install'
+            }
+        }
+                 stage('Trivy Scan'){
+            steps{
+                sh "trivy fs . > trivy.txt"
+                archiveArtifacts artifacts: trivy.txt allowEmptyArtifacts: true
+            }
+        }
         
     }
 }
