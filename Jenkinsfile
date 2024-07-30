@@ -28,6 +28,12 @@ pipeline {
                 archiveArtifacts artifacts: 'trivy.txt', allowEmptyArchive: true
             }
         }
-        
+    stage('Docker Build') {
+            steps {
+                script{
+                    def Image = docker.build("{DOCKER_USER}/${APP_NAME}:${TAG}")
+                }
+            }
+        }
     }
 }
