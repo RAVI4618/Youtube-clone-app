@@ -7,8 +7,7 @@ pipeline {
     environment{
         DOCKER_USER = "gundala22reddy"
         APP_NAME = "youtube-clone"
-        RELEASE = "1.0.0"
-        TAG = "${RELEASE}-${BUILD_ID}".toLowerCase()
+        TAG = "${env.BUILD_NUMBER}"
         IMAGE = "${DOCKER_USER}/${APP_NAME}:${TAG}"
     }  
     stages{
