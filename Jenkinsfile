@@ -1,37 +1,31 @@
 pipeline {
     agent any
-    tools{
+    tools {
         jdk 'jdk17'
         nodejs 'nodejs'
     }
-     environment {
+    environment {
         APP_NAME = "youtube-clone"
         RELEASE = "1.0.0"
         DOCKER_USER = "gundala22reddy"
         IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-    } 
-    stages{
-        stage('Clean'){
-            steps{
-                 cleanWs()
+    }
+    stages {
+        stage('Clean') {
+            steps {
+                cleanWs()
             }
         }
-    stage('Install Dependences'){
-            steps{
+        stage('Install Dependencies') {
+            steps {
                 sh 'npm install'
             }
         }
-    stage('Trivy Scan') {
+        stage('Docker Build') {
             steps {
-                sh 'trivy fs . > trivy.txt'
-                archiveArtifacts artifacts: 'trivy.txt', allowEmptyArchive: true
-            }
-        }
-    stage('Docker Build') {
-            steps {
-                script{
-                    def dockerimage = docker.build("$IMAGE_NAME}:${IMAGE_TAG}")
+                script {
+                    def dockerimage = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
                 }
             }
         }
