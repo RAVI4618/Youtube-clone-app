@@ -24,7 +24,7 @@ pipeline {
         stage('Verify Files') {
             steps {
                 sh 'ls -l' 
-                sh 'cat package.json
+                sh 'cat package.json  || echo "package.json NOT FOUND!"'
             }
         }
         stage('Install Dependencies') {
