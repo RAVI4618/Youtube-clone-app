@@ -11,20 +11,25 @@ pipeline {
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
     stages {
-        stage('Checkout Code') {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()  
+            }
+        }
+        stage('Clone Repository') {
             steps {
                 git branch: 'main', url: 'https://github.com/RAVI4618/Youtube-clone-app.git'
             }
         }
-        stage('Clean Workspace') {
+        stage('Verify Files') {
             steps {
-                cleanWs()
+                sh 'ls -l' 
+                sh 'cat package.json
             }
         }
         stage('Install Dependencies') {
             steps {
-                sh 'ls -l' 
-                sh 'npm install' 
+                sh 'npm install'
             }
         }
         stage('Docker Build') {
