@@ -8,13 +8,7 @@ pipeline {
         RELEASE = "1.0.0"
         DOCKER_USER = "ravi011"
         IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
-stage('Set Image Tag') {
-    steps {
-        script {
-            env.IMAGE_TAG = "${env.RELEASE}-${env.BUILD_NUMBER}"
-        }
-    }
-}
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
     stages {
         stage('Clean Workspace') {
