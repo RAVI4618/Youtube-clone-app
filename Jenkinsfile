@@ -11,11 +11,7 @@ pipeline {
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
     stages {
-        stage('Clean Workspace') {
-            steps {
-                cleanWs()  
-            }
-        }
+        
         stage('Clone Repository') {
             steps {
                 git branch: 'main', url: 'https://github.com/RAVI4618/Youtube-clone-app.git'
