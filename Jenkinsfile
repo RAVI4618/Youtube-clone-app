@@ -23,11 +23,7 @@ pipeline {
                 sh 'cat package.json  || echo "package.json NOT FOUND!"'
             }
         }
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install --verbose'
-            }
-        }
+       
         stage('Docker Build') {
             steps {
                 script {
